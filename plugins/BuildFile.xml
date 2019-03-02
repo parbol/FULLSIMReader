@@ -1,0 +1,10 @@
+<use name="clhep"/>
+<use name="HepMC"/>
+<use name="ROOT"/>
+<use name="FWCore/Framework"/>
+<use name="FWCore/PluginManager"/>
+<use name="FWCore/ParameterSet"/>
+<use name="DataFormats/PatCandidates"/>
+<use name="DataFormats/TrackReco"/>
+<use name="DataFormats/VertexReco"/>
+<flags EDM_PLUGIN="1"/>
