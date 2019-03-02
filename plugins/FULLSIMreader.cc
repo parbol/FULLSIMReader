@@ -137,7 +137,7 @@ class FULLSIMReader : public edm::one::EDAnalyzer<edm::one::SharedResources>  {
       bool goodPhoton(const pat::Photon &);
       bool goodTrack(const pat::IsolatedTrack & track);
 
-      std::string output_filename;
+      std::string output_filename, bdiscriminator_name;
       edm::ParameterSet parameters;
       edm::EDGetTokenT<edm::View<pat::Electron> >  theElectronCollection;   
       edm::EDGetTokenT<edm::View<pat::Muon> >  theMuonCollection;   
@@ -164,6 +164,7 @@ FULLSIMReader::FULLSIMReader(const edm::ParameterSet& iConfig)
    thePhotonCollection = consumes<edm::View<pat::Photon> > (parameters.getParameter<edm::InputTag>("PhotonCollection"));
    theIsoTrackCollection = consumes<edm::View<pat::IsolatedTrack> >  (parameters.getParameter<edm::InputTag>("IsoTrackCollection"));
    thePrimaryVertexCollection = consumes<edm::View<reco::Vertex> >  (parameters.getParameter<edm::InputTag>("PrimaryVertexCollection"));
+   bdiscriminator_name = parameters.getParameter<std::string>("bDiscriminatorName");
    output_filename = parameters.getParameter<std::string>("outputFileName");
 
  
@@ -342,8 +343,8 @@ void FULLSIMReader::analyze(const edm::Event& iEvent, const edm::EventSetup& iSe
        JetSel_pt[i] = jet.pt();
        JetSel_eta[i] = jet.eta(); 
        JetSel_phi[i] = jet.phi(); 
-       JetSel_bdiscriminant[i] = jet.bDiscriminator("CSVv2"); 
-   }
+       JetSel_bdiscriminant[i] = jet.bDiscriminator(bdiscriminator_name); 
+  }
 
 
 
@@ -416,7 +417,7 @@ void FULLSIMReader::beginJob()
     tree_out->Branch("JetSel_pt", JetSel_pt, "MuonSel_pt[nJet]/F");
     tree_out->Branch("JetSel_eta", JetSel_eta, "JetSel_pt[nJet]/F");
     tree_out->Branch("JetSel_phi", JetSel_phi, "JetSel_phi[nJet]/F");
-    tree_out->Branch("JetSel_bdiscriminat", JetSel_bdiscriminant, "JetSel_bdiscriminant[nJet]/F");
+    tree_out->Branch("JetSel_bdiscriminant", JetSel_bdiscriminant, "JetSel_bdiscriminant[nJet]/F");
 
 
     //////////////////////////// ELECTRON CANDIDATE BRANCHES ////////////////////////////
